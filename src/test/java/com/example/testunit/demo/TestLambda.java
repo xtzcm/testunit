@@ -20,12 +20,12 @@ public class TestLambda {
         // TODO 新加的property的作用域? 子线程设置,主线程先读为null,子线程先读,主线程再读有数据
         new Thread( () -> System.setProperty("key", "testKey") ).start();
         System.out.println(System.getProperty("key"));
-        new Thread( () -> System.out.println(System.getProperty("key")) ).start();
-        new Thread( () -> System.out.println(System.getProperty("key")) ).start();
+        new Thread( () -> System.out.println(System.getProperty("key")) ).start();//创建一个线程
+        new Thread( () -> System.out.println(System.getProperty("key")) ).start();//创建另一个线程
     }
 
     /**
-     * Map
+     * Map遍历
      */
     @Test
     public void testTwo() {
