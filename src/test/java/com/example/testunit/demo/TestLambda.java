@@ -39,13 +39,20 @@ public class TestLambda {
 
 
     @Test
-    public void testOne1() {
+    public void testThree() {
         Map<String, Integer> pageVisits = new HashMap<>();
         String page = "https://agiledeveloper.com";
         incrementPageVisit(pageVisits, page);
         incrementPageVisit(pageVisits, page);
+        incrementPageVisit(pageVisits, page);
         System.out.println(pageVisits.get(page));
     }
+
+    /**
+     *
+     * @param pageVisits
+     * @param page
+     */
     public static void incrementPageVisit(Map<String, Integer> pageVisits, String page) {
         pageVisits.merge(page, 1, (oldValue, value) -> oldValue + value);
     }
