@@ -21,6 +21,7 @@ public class TestLambda {
         new Thread( () -> System.setProperty("key", "testKey") ).start();
         System.out.println(System.getProperty("key"));
         new Thread( () -> System.out.println(System.getProperty("key")) ).start();//创建一个线程
+        System.out.println(System.getProperty("key"));
         new Thread( () -> System.out.println(System.getProperty("key")) ).start();//创建另一个线程
     }
 
