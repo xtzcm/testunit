@@ -37,7 +37,9 @@ public class TestLambda {
         map.forEach((key, value) -> System.out.println("key = " + key + ", value = " +value));
     }
 
-
+    /**
+     * 
+     */
     @Test
     public void testThree() {
         Map<String, Integer> pageVisits = new HashMap<>();
