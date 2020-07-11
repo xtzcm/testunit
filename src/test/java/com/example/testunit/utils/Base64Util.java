@@ -35,7 +35,8 @@ public class Base64Util {
 
         // 对字节数组Base64编码
         BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data).replaceAll("\r\n","");// 返回Base64编码过的字节数组字符串
+        // 返回Base64编码过的字节数组字符串,并删除其中的换行符 (window系统为回车+换行:\r\n, linux为换行:\n)
+        return encoder.encode(data).replaceAll("\n","");
     }
 
     /**
@@ -56,7 +57,8 @@ public class Base64Util {
         }
         // 对字节数组Base64编码
         BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(outputStream.toByteArray()).replaceAll("\r\n","");// 返回Base64编码过的字节数组字符串
+        // 返回Base64编码过的字节数组字符串,并删除其中的换行符 (window系统为回车+换行:\r\n, linux为换行:\n)
+        return encoder.encode(outputStream.toByteArray()).replaceAll("\n","");
     }
 
     /**
@@ -97,8 +99,8 @@ public class Base64Util {
             byte[] data = outputStream.toByteArray();
             BASE64Encoder encoder = new BASE64Encoder();
             finalBase64 = encoder.encode(data);
-//            //删除其中的\r\n字符
-            finalBase64 = finalBase64.replaceAll("\r\n","");
+            //删除其中的换行符 (window系统为回车+换行:\r\n, linux为换行:\n)
+            finalBase64 = finalBase64.replaceAll("\n","");
         }catch (Exception e){
         }finally {
             try {
