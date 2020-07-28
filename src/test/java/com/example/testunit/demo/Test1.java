@@ -10,6 +10,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.function.IntBinaryOperator;
 import java.util.stream.Stream;
 
@@ -67,18 +68,11 @@ public class Test1 {
         stream.forEach(System.out::println);
     }
 
-    @Test
-    public void Test2() {
-        System.out.println();
-        IntBinaryOperator est = (int even, int odd) -> even + odd;
-
-    }
-
     /**
      * 测试反射调用getter和setter,替换指定内容的值
      */
     @Test
-    public void Test3() {
+    public void Test2() {
         RuleData rd = new RuleData();
         InfoData result = new InfoData();
         result.setField2("网银未提供叔叔啊");
@@ -111,6 +105,17 @@ public class Test1 {
             System.out.println("12312");
 //            BeanUtils.copyProperties(result, rd);
         }
+    }
+
+    @Test
+    public void Test3() {
+        IntBinaryOperator est = (int even, int odd) -> even + odd;
+    }
+
+    @Test
+    public void Test4() {
+        TreeSet<String> treeSet = new TreeSet<>();
+        System.out.println(Integer.toBinaryString(-2147483648));
     }
 
 }
