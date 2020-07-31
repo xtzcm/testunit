@@ -1,4 +1,4 @@
-package com.example.testunit.demo;
+package com.example.testunit.demo.sort;
 
 import org.junit.Test;
 
