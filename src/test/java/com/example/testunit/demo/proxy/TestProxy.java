@@ -2,6 +2,9 @@ package com.example.testunit.demo.proxy;
 
 import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,10 +27,10 @@ public class TestProxy {
     }
 
     /**
-     * 测试动态代理
+     * 测试JDK动态代理
      */
     @Test
-    public void testDynamicProxy(){
+    public void testJdkDynamicProxy(){
         // 创建真实对象
         Work work = new RealObj();
         // 生成代理类的类加载器
@@ -56,4 +59,35 @@ public class TestProxy {
         System.out.println("=======================");
         System.out.println(proxyObj.dance("藏舞"));
     }
+
+    /**
+     * 测试cglib动态代理
+     */
+    @Test
+    public void testCglibDynamicProxy(){
+        // 创建真实对象
+        Work work = new RealObj();
+        // 创建增强器，用于动态的创建并增强代理对象
+        Enhancer enhancer = new Enhancer();
+        // 设置继承（设置创建的类为真实对象的接口的子类）
+        enhancer.setSuperclass(Work.class);
+        // 设置方法回调
+        enhancer.setCallback(new MethodInterceptor() {
+            @Override
+            public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+                if ("save".equals(method.getName())) {
+                    System.out.println("...调用日志...");
+                    return proxy.invoke(work, args);
+                }
+                return method.invoke(work, args);
+            }
+        });
+        // 创建代理对象
+        Work proxyObj = (Work)enhancer.create();
+        // 使用代理对象执行方法
+        proxyObj.sing();
+        System.out.println("=======================");
+        System.out.println(proxyObj.dance("藏舞"));
+    }
+
 }
