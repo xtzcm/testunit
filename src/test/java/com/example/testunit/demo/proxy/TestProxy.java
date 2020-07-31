@@ -22,7 +22,7 @@ public class TestProxy {
         System.out.println("=======================");
         System.out.println(work.dance("藏舞"));
     }
-    
+
     /**
      * 测试动态代理
      */
