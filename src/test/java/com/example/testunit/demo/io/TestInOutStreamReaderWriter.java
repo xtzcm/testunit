@@ -3,14 +3,13 @@ package com.example.testunit.demo.io;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.*;
 
 /**
- * @Despriction: IO测试类
+ * @Despriction: InputStream,OutputStream,Reader,Writer测试类
  * @Author: wangcheng
  * @Date: 2018/4/7 12:35
  */
-public class TestIO {
+public class TestInOutStreamReaderWriter {
 
     /**
      * 测试输出字符流
@@ -41,7 +40,7 @@ public class TestIO {
     public void testReaderOneByOne(){
         FileReader fr = null;
         try {
-            fr = new FileReader("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt");
+            fr = new FileReader("G:"+File.separator+"test"+File.separator+"test.txt");
             int ch = 0;
             while ((ch = fr.read()) != -1) {
                 System.out.println((char)ch);
@@ -66,7 +65,7 @@ public class TestIO {
     public void testReader2(){
         FileReader fr = null;
         try {
-            fr = new FileReader("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt");
+            fr = new FileReader("G:"+File.separator+"test"+File.separator+"test.txt");
             char[] buf = new char[1024];
             int num = 0;
             while ((num = fr.read(buf)) != -1) {
@@ -93,8 +92,8 @@ public class TestIO {
         FileReader fr = null;
         FileWriter fw = null;
         try {
-            fr = new FileReader("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt");
-            fw = new FileWriter("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"testCopy.txt");
+            fr = new FileReader("G:"+File.separator+"test"+File.separator+"test.txt");
+            fw = new FileWriter("G:"+File.separator+"test"+File.separator+"testCopy.txt");
             char[] buf = new char[1024];
             int num = 0;
             while ((num = fr.read(buf)) != -1) {
@@ -128,8 +127,8 @@ public class TestIO {
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            br = new BufferedReader(new FileReader("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt"));
-            bw = new BufferedWriter(new FileWriter("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"testCopy.txt"));
+            br = new BufferedReader(new FileReader("G:"+File.separator+"test"+File.separator+"test.txt"));
+            bw = new BufferedWriter(new FileWriter("G:"+File.separator+"test"+File.separator+"testCopy.txt"));
             String line = null;
             while ((line = br.readLine()) != null) {
                 bw.write(line);
@@ -163,7 +162,7 @@ public class TestIO {
     public void testOutputStream1(){
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"properties.txt");
+            fos = new FileOutputStream("G:"+File.separator+"test"+File.separator+"properties.txt");
             fos.write("ceshitest哈".getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,7 +184,7 @@ public class TestIO {
     public void testInputStream2(){
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt");
+            fis = new FileInputStream("G:"+File.separator+"test"+File.separator+"test.txt");
             byte[] bytes = new byte[1024];
             int length = 0;
             while ((length = fis.read(bytes)) != -1) {
@@ -211,7 +210,7 @@ public class TestIO {
     public void testInputStream(){
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt");
+            fis = new FileInputStream("G:"+File.separator+"test"+File.separator+"test.txt");
             int integer = 0;
             while ((integer = fis.read()) != -1) {
                 System.out.println((char)integer);
@@ -237,8 +236,8 @@ public class TestIO {
         FileInputStream fis = null;
         FileOutputStream fos = null;
         try {
-            fis = new FileInputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"微信图片_20180111151700.jpg");
-            fos = new FileOutputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"picCopy.jpg");
+            fis = new FileInputStream("G:"+File.separator+"test"+File.separator+"微信图片_20180111151700.jpg");
+            fos = new FileOutputStream("G:"+File.separator+"test"+File.separator+"picCopy.jpg");
             byte[] bytes = new byte[1024];
             int length = 0;
             while ((length = fis.read(bytes)) != -1) {
@@ -272,8 +271,8 @@ public class TestIO {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            bis = new BufferedInputStream(new FileInputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"微信图片_20180111151700.jpg"));
-            bos = new BufferedOutputStream(new FileOutputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"picCopy.jpg"));
+            bis = new BufferedInputStream(new FileInputStream("G:"+File.separator+"test"+File.separator+"微信图片_20180111151700.jpg"));
+            bos = new BufferedOutputStream(new FileOutputStream("G:"+File.separator+"test"+File.separator+"picCopy.jpg"));
             int by = 0;
             while ((by = bis.read()) != -1) {
                 bos.write(by);
@@ -331,7 +330,7 @@ public class TestIO {
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream("G:"+System.getProperty("file.separator")+"test"+System.getProperty("file.separator")+"test.txt")));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream("G:"+File.separator+"test"+File.separator+"test.txt")));
             bw = new BufferedWriter(new OutputStreamWriter(System.out));
             String line = null;
             while ((line =br.readLine()) != null ) {
@@ -352,116 +351,6 @@ public class TestIO {
             }
             try {
                 bw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 合并流
-     */
-    @Test
-    public void testSequenceStream(){
-        SequenceInputStream sis = null;
-        FileOutputStream fos = null;
-        try {
-            Vector<InputStream> vector = new Vector<>();
-            vector.add(new FileInputStream("G:"+File.separator+"test"+File.separator+"sequenceInputStream"+File.separator+"part1.txt"));
-            vector.add(new FileInputStream("G:"+File.separator+"test"+File.separator+"sequenceInputStream"+File.separator+"part2.txt"));
-            vector.add(new FileInputStream("G:"+File.separator+"test"+File.separator+"sequenceInputStream"+File.separator+"part3.txt"));
-            Enumeration<InputStream> elements = vector.elements();
-            sis = new SequenceInputStream(elements);
-            fos = new FileOutputStream("G:"+File.separator+"test"+File.separator+"sequenceInputStream"+File.separator+"result.txt");
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            while ((len = sis.read(bytes)) != -1) {
-                fos.write(bytes,0 ,len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fos != null)
-                    fos.close();
-                if (fos != null)
-                    sis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 切割文件
-     */
-    @Test
-    public void testSplitFile(){
-        String sepr = File.separator;
-        FileInputStream fis =null;
-        FileOutputStream fos = null;
-        try {
-            fis = new FileInputStream("G:"+ sepr +"test"+ sepr +"splitFile"+ sepr +"source.mp3");
-            byte[] bytes = new byte[1024*1024];
-            int len = 0;
-            int count = 1;
-            while ((len = fis.read(bytes)) != -1) {
-                fos = new FileOutputStream("G:" + sepr + "test" + sepr + "splitFile" + sepr + "result-" + (count++) + ".part");
-                fos.write(bytes, 0, len);
-                fos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null)
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 合并文件
-     */
-    @Test
-    public void testMergeFile(){
-        String sepr = File.separator;
-        List<FileInputStream> list = new ArrayList<>();
-        SequenceInputStream sis = null;
-        FileOutputStream fos = null;
-        try {
-            for (int i = 1; i < 3; i++) {
-                list.add(new FileInputStream("G:" + sepr + "test" + sepr + "splitFile" + sepr + "result-" + i + ".part"));
-            }
-            Iterator<FileInputStream> iterator = list.iterator();
-            final Enumeration<FileInputStream> enumeration = new Enumeration<FileInputStream>() {
-                @Override
-                public boolean hasMoreElements() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public FileInputStream nextElement() {
-                    return iterator.next();
-                }
-            };
-            sis = new SequenceInputStream(enumeration);
-            fos = new FileOutputStream("G:" + sepr + "test" + sepr + "splitFile" + sepr + "result" + ".mp3");
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            while ((len = sis.read(bytes)) != -1) {
-                fos.write(bytes, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fos != null)
-                    fos.close();
-                if (sis != null)
-                    sis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
