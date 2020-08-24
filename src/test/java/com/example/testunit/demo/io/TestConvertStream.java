@@ -1,4 +1,4 @@
-package com.example.testunit.demo.io.bean;
+package com.example.testunit.demo.io;
 
 import org.junit.Test;
 
