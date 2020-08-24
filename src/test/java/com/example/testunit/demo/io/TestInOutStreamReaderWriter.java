@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.io.*;
 
 /**
- * @Despriction: InputStream,OutputStream,Reader,Writer测试类
+ * @Despriction: 测试基础字节流、字符流：InputStream,OutputStream,Reader,Writer
  * @Author: wangcheng
  * @Date: 2018/4/7 12:35
  */
