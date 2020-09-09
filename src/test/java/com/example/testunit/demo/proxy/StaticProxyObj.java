@@ -1,5 +1,8 @@
 package com.example.testunit.demo.proxy;
 
+/**
+ * 静态代理对象
+ */
 public class StaticProxyObj implements Work{
 
     private Work work;
