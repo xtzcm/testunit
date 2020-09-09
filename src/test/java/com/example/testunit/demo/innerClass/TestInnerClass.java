@@ -1,7 +1,7 @@
 package com.example.testunit.demo.innerClass;
 
 /**
- * @Despriction: 测试内部类
+ * @Despriction: 测试普通内部类
  * @Author: wangcheng
  * @Date: 2018/4/30 21:25
  */
