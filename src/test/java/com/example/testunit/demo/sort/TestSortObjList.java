@@ -38,16 +38,15 @@ public class TestSortObjList {
      */
     @Test
     public void testSortByInt() {
-        //方法1:常规方式 TODO 排序失败
-        Comparator<ObjForSort> comparator = new Comparator<ObjForSort>() {
-            @Override
-            public int compare(ObjForSort o1, ObjForSort o2) {
-                return o1.getAge() > o2.getAge() ? 0 : 1;
-            }
-        };
-        //方法2:lambda表达式
-//        Comparator<ObjForSort> comparator = (o1, o2) -> o1.getAge() > o2.getAge() ? 1 : 0;
-//        Collections.sort(objList, comparator);
+        //常规方式
+//        Collections.sort(objList, new Comparator<ObjForSort>() {
+//            @Override
+//            public int compare(ObjForSort o1, ObjForSort o2) {
+//                return o1.getAge() - o2.getAge();
+//            }
+//        });
+        //lambda表达式方式
+        Collections.sort(objList, Comparator.comparingInt(ObjForSort::getAge));
     }
 
     /**
@@ -55,9 +54,7 @@ public class TestSortObjList {
      */
     @Test
     public void testSortByString(){
-
-        //根据姓名排序（String）
-
+        //常规方式
 //        Collections.sort(objList, new Comparator<ObjForSort>() {
 //            @Override
 //            public int compare(ObjForSort o1, ObjForSort o2) {
@@ -65,14 +62,12 @@ public class TestSortObjList {
 //                return collator.compare(o1.getName(), o2.getName());
 //            }
 //        });
+        //lambda表达式方式
+        Collections.sort(objList, (o1, o2) -> {
+            Collator collator = Collator.getInstance(Locale.CHINA);
+            return collator.compare(o1.getName(), o2.getName());
+        });
 
-//         Collections.sort(objList, (o1, o2) -> {
-//            Collator collator = Collator.getInstance(Locale.CHINA);
-//            return collator.compare(o1.getName(), o2.getName());
-//        });
-
-        //TODO 排序失败
-//        objList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 
     }
 }
