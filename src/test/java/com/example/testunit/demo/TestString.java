@@ -11,6 +11,7 @@ public class TestString {
 
     @Test
     public void testCompareString(){
+
         String s1 = "string";
         String s2 = "string";
         String s3 = "str" + "ing";
