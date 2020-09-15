@@ -12,15 +12,15 @@ public class TestString {
     @Test
     public void testCompareString(){
 
-        String s1 = "string";
-        String s2 = "string";
-        String s3 = "str" + "ing";
-        String s4 = "str" + new String("ing");
-        String s5 = new String("string");
-        String s6 = s4.intern();
-        String s7 = "str";
-        String s8 = "ing";
-        String s9 = s7 + s8;
+        String s1 = "string";//被编译器放入常量池
+        String s2 = "string";//常量池已经有相同的字符串，s2直接指向该字符串
+        String s3 = "str" + "ing";//是已知字面量，编译器自动优化，拼接成“string”放入常量池,常量池已经有相同的字符串，s3直接指向该字符串
+        String s4 = "str" + new String("ing");//不是已知字面量，编译器不会自动优化，运行时才会在堆内存中创建新的字符串对象，并让s4指向该地址
+        String s5 = new String("string");//不是已知字面量，编译器不会自动优化，运行时才会在堆内存中创建新的字符串对象，并让s5指向该地址
+        String s6 = s4.intern();//intern方法试图将s4的值放入常量池中，但常量池中已经有相同的字符串了，直接返回该字符串的地址,，并让s6指向该地址
+        String s7 = "str";//被编译器放入常量池
+        String s8 = "ing";//被编译器放入常量池
+        String s9 = s7 + s8;//不是已知字面量，编译器不会自动优化，运行时才会在堆内存中创建新的字符串对象，并让s4指向该地址
 
         System.out.println("s1 == s2 : " + (s1 == s2));
         System.out.println("s1 == s3 : " + (s1 == s3));
