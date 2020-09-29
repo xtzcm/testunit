@@ -13,7 +13,7 @@ public class TestString {
     public void testCompareString(){
 
         String s1 = "string";//被编译器放入常量池
-        String s2 = "string";//常量池已经有相同的字符串，s2直接指向该字符串
+        String s2 = "string";//是已知字面量，被编译器放入常量池，但常量池已经有相同的字符串，s2直接指向该字符串
         String s3 = "str" + "ing";//是已知字面量，编译器自动优化，拼接成“string”放入常量池,常量池已经有相同的字符串，s3直接指向该字符串
         String s4 = "str" + new String("ing");//不是已知字面量，编译器不会自动优化，运行时才会在堆内存中创建新的字符串对象，并让s4指向该地址
         String s5 = new String("string");//不是已知字面量，编译器不会自动优化，运行时才会在堆内存中创建新的字符串对象，并让s5指向该地址
