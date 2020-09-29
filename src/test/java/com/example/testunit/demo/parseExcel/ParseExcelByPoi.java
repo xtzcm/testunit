@@ -32,11 +32,10 @@ public class ParseExcelByPoi {
             e.printStackTrace();
         } catch (InvalidFormatException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (null != bis)
-                bis.close();
+                    bis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
