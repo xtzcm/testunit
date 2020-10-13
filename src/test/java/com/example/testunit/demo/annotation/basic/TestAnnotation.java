@@ -1,4 +1,4 @@
-package com.example.testunit.demo.annotation;
+package com.example.testunit.demo.annotation.basic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
