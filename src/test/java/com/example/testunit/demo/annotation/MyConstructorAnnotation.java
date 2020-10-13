@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Despriction: 自定义注解类
+ * @Despriction: 基础：构造方法级别自定义注解类
  * @Author: wangcheng
  * @Date: 2018/6/3 11:27
  */

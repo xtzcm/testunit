@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * @Despriction:
+ * @Despriction: 基础：测试反射获取注解
  * @Author: wangcheng
  * @Date: 2018/6/3 11:30
  */
