@@ -1,6 +1,5 @@
 package com.example.testunit.utils;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
@@ -28,8 +27,6 @@ public class PoiUtils {
             return WorkbookFactory.create(bis);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
         } finally {
             try {
                 if (null != bis)
@@ -52,8 +49,6 @@ public class PoiUtils {
             bis = new BufferedInputStream(is);
             return WorkbookFactory.create(bis);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
             e.printStackTrace();
         } finally {
             try {

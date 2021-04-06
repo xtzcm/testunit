@@ -1,6 +1,8 @@
 package com.example.testunit.demo.parseExcel;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.junit.Test;
@@ -28,9 +30,44 @@ public class ParseExcelByPoi {
                     System.out.println("sheet" + (i + 1) + "有效行数 = " + workbook.getSheetAt(i).getLastRowNum());
                 }
             }
+            Cell cell = workbook.getSheet("Sheet2").getRow(0).getCell(0);
+            FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            String value = null;
+            switch (cell.getCellType()) {
+                case _NONE:
+                    break;
+                case NUMERIC:
+                    break;
+                case STRING:
+                    break;
+                case FORMULA:
+                    CellValue cellValue = evaluator.evaluate(cell);
+                    switch (cellValue.getCellType()) {
+                        case STRING:
+                            System.out.print("String :");
+                            value = cellValue.getStringValue();
+                            break;
+
+                        case NUMERIC:
+                            System.out.print("NUMERIC:");
+                            value = String.valueOf(cellValue.getNumberValue());
+                            break;
+                        case FORMULA:
+                            System.out.print("FORMULA:");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case BLANK:
+                    break;
+                case BOOLEAN:
+                    break;
+                case ERROR:
+                    break;
+            }
+            System.out.println(value);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
             e.printStackTrace();
         } finally {
             try {
