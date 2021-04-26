@@ -16,7 +16,6 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,18 @@ import java.util.Map;
  * @Date: 2018/5/13 11:12
  */
 public class PoiUtils {
-    private static final DataFormatter DATA_FORMATTER = new DataFormatter();
+
+    /**
+     * DataFormatter,用于格式化单元格本身的格式来格式化值
+     */
+    public static final DataFormatter DATA_FORMATTER = new DataFormatter();
+    /**
+     * FormulaEvaluator,用于获取公式值,传入null时表示获取公式本身.
+     * FormulaEvaluator对象获取:可通过Workbook对象{@link Workbook#getCreationHelper()}获取CreationHelper对象,
+     * 再通过CreationHelper对象{@link CreationHelper#createFormulaEvaluator()}创建FormulaEvaluator对象.
+     * e.g. workbook.getCreationHelper().createFormulaEvaluator()
+     */
+    private static ThreadLocal<FormulaEvaluator> formulaEvaluator = new ThreadLocal<>();
 
     /**
      * 获取工作簿
@@ -83,39 +93,66 @@ public class PoiUtils {
     }
 
     /**
-     * 获取单元格的值,数字与excel显示格式保持一致,可选择是否跳过公式
-     * @param cell 单元格
-     * @param isIgnoreFormula 是否跳过公式,若为true,则单元格是公式时返回""
-     * @param isAllowErrorType 是否允许错误格式
+     * 获取单元格的值
+     * 数字与excel显示格式保持一致,不跳过公式，获取公式的计算结果，允许错误格式
+     * @param cell
      * @return
      * @throws Exception
      */
-    public static String getCellValue(Cell cell, FormulaEvaluator evaluator, boolean isIgnoreFormula, boolean isAllowErrorType) throws Exception {
+    public static String getCellValue(Cell cell) throws Exception {
+        return getCellValue(cell, true, true);
+    }
+
+    /**
+     * 获取单元格的值
+     * 数字与excel显示格式保持一致,可选择是否跳过公式，当不跳过公式时将获取公式的计算结果并允许错误格式
+     * @param cell
+     * @return
+     * @throws Exception
+     */
+    public static String getCellValue(Cell cell, boolean isIgnoreFormula) throws Exception {
+        return getCellValue(cell, isIgnoreFormula, true, true);
+    }
+
+    /**
+     * 获取单元格的值
+     * 数字与excel显示格式保持一致,可选择是否跳过公式，是否获取公式的计算结果以及是否允许错误格式
+     * @param cell 单元格
+     * @param isIgnoreFormula 是否跳过公式,若为true,则单元格是公式时返回""
+     * @param isGetFormulaValue 是否获取公式的计算结果，true为获取，false为不获取(返回公式本身)
+     * @param isAllowErrorType 是否允许错误格式，，true为允许，false为不允许(返回错误值)
+     * @return
+     * @throws Exception
+     */
+    public static String getCellValue(Cell cell, boolean isIgnoreFormula, boolean isGetFormulaValue, boolean isAllowErrorType) throws Exception {
         String result = "";
-        if (null != cell && (!isIgnoreFormula || !CellType.FORMULA.equals(cell.getCellType())))
-            result = getCellValue(cell, evaluator, isAllowErrorType);
+        if (null != cell && !(isIgnoreFormula & CellType.FORMULA.equals(cell.getCellType())))
+            result = getCellValue(cell, isGetFormulaValue, isAllowErrorType);
         return result;
     }
 
     /**
      * 获取单元格的值
+     * 数字与excel显示格式保持一致,不跳过公式，可选择是否获取公式的计算结果以及是否允许错误格式
      * @param cell
-     * @param evaluator FormulaEvaluator,用于获取公式值,传入null时表示获取公式本身.
-     * @param isAllowErrType 是否允许错误格式,true为允许,false为不允许(将抛出异常).
-     * FormulaEvaluator对象获取:可通过Workbook对象{@link Workbook#getCreationHelper()}获取CreationHelper对象,
-     * 再通过CreationHelper对象{@link CreationHelper#createFormulaEvaluator()}创建FormulaEvaluator对象.
-     * e.g. workbook.getCreationHelper().createFormulaEvaluator()
+     * @param isGetFormulaValue 是否获取公式的计算结果，true为获取，false为不获取(返回公式本身)
+     * @param isAllowErrType 是否允许错误格式,true为允许,false为不允许(将抛出异常)
      * @return a string value of the cell
      * @throws Exception
      */
-    public static String getCellValue(Cell cell, FormulaEvaluator evaluator, boolean isAllowErrType) throws Exception {
-        if (cell == null) {
+    public static String getCellValue(Cell cell, boolean isGetFormulaValue, boolean isAllowErrType) throws Exception {
+        if (null == cell) {
             return "";
         }
         CellType cellType = cell.getCellType();
         if (cellType == CellType.FORMULA) {
-            if (null == evaluator) {
+            if (!isGetFormulaValue) {
                 return cell.getCellFormula();
+            }
+            FormulaEvaluator evaluator = PoiUtils.formulaEvaluator.get();
+            if (null == evaluator){
+                PoiUtils.formulaEvaluator.set(cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator());
+                evaluator = PoiUtils.formulaEvaluator.get();
             }
             cellType = evaluator.evaluateFormulaCell(cell);
             if (cellType == CellType.NUMERIC) {
@@ -124,9 +161,8 @@ public class PoiUtils {
         }
         switch (cellType) {
             case NUMERIC:
-                SimpleDateFormat formatter = ExtBuiltinFormats.getDateFormatter(cell);
-                if (null != formatter)
-                    return formatter.format(cell.getDateCellValue());
+                if (DateFormatUtils.isCellDateFormatted(cell))
+                    return DateFormatUtils.format(cell);//TODO 待改造，问题：日期格式丢失年份，或时间格式丢失日期
                 else
                     return DATA_FORMATTER.formatCellValue(cell);
             case STRING:
@@ -184,7 +220,6 @@ public class PoiUtils {
     public static Map<String, Map<String, Integer>> getMergedRegions(Sheet sheet) throws Exception {
         Map<String, Map<String, Integer>> mergedRegions = new HashMap<>();
         int numMergedRegions = sheet.getNumMergedRegions();
-        FormulaEvaluator evaluator = sheet.getWorkbook().getCreationHelper().createFormulaEvaluator();
         Map<String, Integer> mergedRegionTemp;
         for (int i = 0; i < numMergedRegions; i++) {
             mergedRegionTemp = new HashMap<>();
@@ -193,7 +228,7 @@ public class PoiUtils {
             mergedRegionTemp.put("lastRow", mergedRegion.getLastRow());
             mergedRegionTemp.put("firstColumn", mergedRegion.getLastColumn());
             mergedRegionTemp.put("lastColumn", mergedRegion.getFirstColumn());
-            String mergedRegionValue = getCellValue(sheet.getRow(mergedRegion.getFirstRow()).getCell(mergedRegion.getFirstColumn()), evaluator, true);
+            String mergedRegionValue = getCellValue(sheet.getRow(mergedRegion.getFirstRow()).getCell(mergedRegion.getFirstColumn()));
             if (null != mergedRegionValue && "".equals(mergedRegionValue.trim())){
                 mergedRegions.put(mergedRegionValue.trim(), mergedRegionTemp);
             }
@@ -229,7 +264,7 @@ public class PoiUtils {
     public static int getLastColumnNumOfRow(Row row) {
         short firstCellNum = row.getFirstCellNum();
         short lastCellNum = row.getLastCellNum();//getLastCellNum=最大有效列号+1
-        return firstCellNum == lastCellNum ? firstCellNum : lastCellNum - 1;
+        return firstCellNum == lastCellNum ? lastCellNum : lastCellNum - 1;
     }
 
 }

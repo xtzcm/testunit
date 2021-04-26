@@ -32,6 +32,7 @@ public class ExtBuiltinFormats {
     public static final SimpleDateFormat FORMAT_M_D_YY = new SimpleDateFormat("M/d/yy");
     public static final SimpleDateFormat FORMAT_MMM_ENGLISH = new SimpleDateFormat("MMM", Locale.ENGLISH);
     public static final SimpleDateFormat FORMAT_MMM_S_YY_ENGLISH = new SimpleDateFormat("MMM-yy", Locale.ENGLISH);
+    public static final SimpleDateFormat FORMAT_MMM_S_YYYY_ENGLISH = new SimpleDateFormat("MMM-yyyy", Locale.ENGLISH);
     public static final SimpleDateFormat FORMAT_MMMM_S_YY_ENGLISH = new SimpleDateFormat("MMMM-yy", Locale.ENGLISH);
     public static final SimpleDateFormat FORMAT_DD_S_MMM_S_YY_ENGLISH = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
     public static final SimpleDateFormat FORMAT_D_S_MMM_S_YY_ENGLISH = new SimpleDateFormat("d-MMM-yy", Locale.ENGLISH);
@@ -63,7 +64,7 @@ public class ExtBuiltinFormats {
         DATE_FORMATTER_MAP.put("m/d/yy;@", FORMAT_M_D_YY);
         DATE_FORMATTER_MAP.put("mm/dd/yy;@", FORMAT_MM_DD_YY);
         DATE_FORMATTER_MAP.put("[DBNum1][$-804]yyyy\"年\"m\"月\"d\"日\";@", FORMAT_YYYY_NIAN_M_YUE_D_RI);//TODO
-        DATE_FORMATTER_MAP.put("[DBNum1][$-804]yyyy\"年\"m\"月\";@", FORMAT_YYYY_NIAN_M_YUE_D_RI);//TODO
+        DATE_FORMATTER_MAP.put("[DBNum1][$-804]yyyy\"年\"m\"月\";@", FORMAT_YYYY_NIAM_M_YUE);//TODO
         DATE_FORMATTER_MAP.put("[DBNum1][$-804]m\"月\"d\"日\";@", FORMAT_M_YUE_D_RI);//TODO
         DATE_FORMATTER_MAP.put("yyyy\"年\"m\"月\"d\"日\";@", FORMAT_YYYY_NIAN_M_YUE_D_RI);
         DATE_FORMATTER_MAP.put("yyyy\"年\"m\"月\";@", FORMAT_YYYY_NIAM_M_YUE);
@@ -83,6 +84,7 @@ public class ExtBuiltinFormats {
         DATE_FORMATTER_MAP.put("[$-409]mmmmm\\-yy;@", FORMAT_MMM_S_YY_ENGLISH);
         DATE_FORMATTER_MAP.put("yyyy\"年\"m\"月\"", FORMAT_YYYY_NIAM_M_YUE);
         DATE_FORMATTER_MAP.put("m\"月\"d\"日\"", FORMAT_M_YUE_D_RI);
+        DATE_FORMATTER_MAP.put("mmm\\-yyyy", FORMAT_MMM_S_YYYY_ENGLISH);
         //time
         DATE_FORMATTER_MAP.put("[$-F400]h:mm:ss\\ AM/PM", FORMAT_H_MM_SS);
         DATE_FORMATTER_MAP.put("h:mm;@", FORMAT_H_MM);
@@ -145,6 +147,7 @@ public class ExtBuiltinFormats {
         "[$-409]mmmmm\\-yy;@",
         "yyyy\"年\"m\"月\"",
         "m\"月\"d\"日\"",
+        "mmm\\-yyyy",
         //时间
         "[$-F400]h:mm:ss\\ AM/PM",
         "h:mm;@",
@@ -208,16 +211,6 @@ public class ExtBuiltinFormats {
             }
         }
         return false;
-    }
-
-    /**
-     * 匹配自定义格式并返回SimpleDateFormat
-     * @param cell
-     * @return
-     */
-    public static SimpleDateFormat getDateFormatter(Cell cell) {
-        SimpleDateFormat formatter = DATE_FORMATTER_MAP.get(cell.getCellStyle().getDataFormatString());
-        return null == formatter ? EXT_DATE_FORMATTER_MAP.get(Integer.valueOf(cell.getCellStyle().getDataFormat())) : formatter;
     }
 
 }
